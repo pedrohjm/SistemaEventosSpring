@@ -1,0 +1,22 @@
+# Diretório de build do Maven
+/target/
+
+# Configurações de IDEs
+.vscode/
+.idea/
+*.iml
+
+# Arquivos temporários
+*.log
+*.tmp
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Arquivos de backup
+*~
+*.bak
+
+# Arquivos de ambiente (se usados)
+.env
