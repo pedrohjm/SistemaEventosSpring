@@ -2,6 +2,10 @@ package web.eventos361.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,11 +32,14 @@ public class UsuarioController {
 
 	private CadastroUsuarioService cadastroUsuarioService;
 	private PasswordEncoder passwordEncoder;
+	private UserDetailsService userDetailsService;
 	
 	public UsuarioController(CadastroUsuarioService cadastroUsuarioService,
-			PasswordEncoder passwordEncoder) {
+			PasswordEncoder passwordEncoder,
+			UserDetailsService userDetailsService) {
 		this.cadastroUsuarioService = cadastroUsuarioService;
 		this.passwordEncoder = passwordEncoder;
+		this.userDetailsService = userDetailsService;
 	}
 
 	@GetMapping("/cadastrar")
@@ -59,8 +66,12 @@ public class UsuarioController {
 			usuario.setAtivo(true);
 			usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
 			cadastroUsuarioService.salvar(usuario);
+			// Login automático após cadastro
+			UserDetails userDetails = userDetailsService.loadUserByUsername(usuario.getNomeUsuario());
+			UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, usuario.getSenha(), userDetails.getAuthorities());
+			SecurityContextHolder.getContext().setAuthentication(auth);
 			redirectAttributes.addAttribute("mensagem", "Cadastro de usuário efetuado com sucesso.");
-			return "redirect:/usuarios/cadastrosucesso";
+			return "redirect:/";
 		}
 	}
 	

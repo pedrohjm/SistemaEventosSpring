@@ -30,4 +30,9 @@ public class IndexController {
 		return "login :: formulario";
 	}
 	
+	@HxRequest
+	@GetMapping("/menu-lateral")
+	public String menuLateralHTMX() {
+		return "layout/fragments/sidebar :: sidebar";
+	}
 }
