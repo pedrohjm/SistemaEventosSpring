@@ -17,8 +17,8 @@ public class Evento {
     private static final long serialVersionUID = 5757384541654785800L; // Gere outro valor
 
     @Id
-    @SequenceGenerator(name="gerador55", sequenceName="usuario_codigo_seq", allocationSize=1)
-    @GeneratedValue(generator="gerador55", strategy=GenerationType.SEQUENCE)
+    @SequenceGenerator(name="evento_seq", sequenceName="evento_codigo_seq", allocationSize=1)
+    @GeneratedValue(generator="evento_seq", strategy=GenerationType.SEQUENCE)
     private Long codigo;
     @NotBlank(message = "O nome do usuário é obrigatório")
     private String nome;
