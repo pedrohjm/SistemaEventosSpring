@@ -14,7 +14,7 @@
             <span th:if="${param.error}">Usuário e/ou senha inválidos.</span>
             <span th:if="${param.logout}">Você foi deslogado.</span>
           </div>
-          <form th:hx-post="@{/login}" hx-target="#main" hx-swap="outerHTML">
+          <form th:action="@{/login}" method="post">
             <label for="username" class="block text-gray-700 font-medium mb-2 mt-10">Usuário</label>
             <input type="text" id="username" name="username" autofocus="autofocus" class="block w-full px-4 py-3 text-gray-500 disabled:opacity-50 disabled:pointer-events-none border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500" />
 

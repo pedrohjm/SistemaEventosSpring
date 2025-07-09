@@ -25,17 +25,11 @@ public class SecurityConfig {
                 http
                                 .authorizeHttpRequests(configurer -> configurer
                                                 // Qualquer um pode fazer requisições para essas URLs
-                                                .requestMatchers("/css/**", "/js/**", "/images/**", "/", "/index.html")
-                                                .permitAll()
-                                                .requestMatchers("usuarios/cadastrar").permitAll()
-                                                .requestMatchers("eventos/novo").hasAuthority("PALESTRANTE")
-                                                .requestMatchers("eventos/abriralterar").hasAuthority("PALESTRANTE")
-                                                // Um usuário autenticado e com o papel ADMIN pode fazer requisições
-                                                // para essas
-                                                // URLs
-//                                                .requestMatchers("/vacinas/nova").hasRole("ADMIN")
-//                                                .requestMatchers("/usuarios/cadastrar").hasRole("ADMIN")
-//                                                 .requestMatchers("URL").hasAnyRole("ADMIN", "USUARIO")
+                                                .requestMatchers("/css/**", "/js/**", "/images/**", "/", "/index.html").permitAll()
+                                                .requestMatchers("/usuarios/cadastrar").permitAll()
+                                                .requestMatchers("/eventos/novo").permitAll()
+                                                .requestMatchers("/eventos/abriralterar").permitAll()
+                                                .requestMatchers("/logout").permitAll()
                                                 .anyRequest().authenticated())
                                 .formLogin(form -> form
                                                 // Uma página de login customizada
@@ -47,9 +41,9 @@ public class SecurityConfig {
                                                 .permitAll())
                                 .logout(logout -> logout
                                                 .logoutUrl("/logout")
-                                                .logoutSuccessHandler(
-                                                                (request, response, authentication) -> response
-                                                                                .addHeader("HX-Redirect", "/"))
+                                                .logoutSuccessHandler((request, response, authentication) -> {
+                                                    response.sendRedirect("/login?logout");
+                                                })
                                                 .invalidateHttpSession(true)
                                                 .deleteCookies("JSESSIONID"))
                                 .sessionManagement(session -> session
