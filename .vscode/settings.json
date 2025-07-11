@@ -1,6 +1,9 @@
 {
     "java.compile.nullAnalysis.mode": "automatic",
     "java.configuration.updateBuildConfiguration": "automatic",
+    "java.debug.settings.enableRunDebugCodeLens": true,
+    "java.debug.settings.hotCodeReplace": "auto",
+    "spring-boot.ls.checkJVM": false,
     "sqltools.connections": [
         {
             "previewLimit": 50,

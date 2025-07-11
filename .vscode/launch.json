@@ -2,13 +2,23 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Spring Boot-Application<controlevacinacao>",
+            "name": "Spring Boot-Application<eventos361>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
-            "mainClass": "web.controlevacinacao.Application",
-            "projectName": "controlevacinacao",
+            "mainClass": "web.eventos361.Application",
+            "projectName": "eventos361",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Debug Spring Boot App",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "web.eventos361.Application",
+            "projectName": "eventos361",
+            "args": "",
+            "vmArgs": "-Dspring.profiles.active=dev"
         }
     ]
 }
