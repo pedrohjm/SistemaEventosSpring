@@ -3,8 +3,6 @@ package web.eventos361.repository.queries.evento;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -23,8 +21,6 @@ import web.eventos361.model.Evento;
 import web.eventos361.repository.pagination.PaginacaoUtil;
 
 public class EventoQueriesImpl implements EventoQueries {
-
-    private static final Logger logger = LoggerFactory.getLogger(EventoQueriesImpl.class);
 
     @PersistenceContext
     private EntityManager em;
@@ -51,6 +47,17 @@ public class EventoQueriesImpl implements EventoQueries {
         Long total = em.createQuery(countQuery).getSingleResult();
 
         return new PageImpl<>(eventos, pageable, total);
+    }
+
+    @Override
+    public List<Evento> findAllWithParticipantes() {
+        return em.createQuery(
+            "SELECT DISTINCT e FROM Evento e " +
+            "LEFT JOIN FETCH e.participantes p " +
+            "LEFT JOIN FETCH p.usuario " +
+            "LEFT JOIN FETCH e.usuario " +
+            "ORDER BY e.dataEvento DESC", Evento.class)
+            .getResultList();
     }
 
     private List<Predicate> criarPredicados(EventoFilter filtro, CriteriaBuilder builder, Root<Evento> root) {
