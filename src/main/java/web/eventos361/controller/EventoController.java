@@ -31,6 +31,7 @@ import web.eventos361.notificacao.NotificacaoSweetAlert2;
 import web.eventos361.notificacao.TipoNotificaoSweetAlert2;
 import web.eventos361.pagination.PageWrapper;
 import web.eventos361.repository.EventoRepository;
+import web.eventos361.repository.ParticipanteRepository;
 import web.eventos361.service.CadastroUsuarioService;
 import web.eventos361.service.EventoService;
 import web.eventos361.service.ParticipanteService;
@@ -45,12 +46,14 @@ public class EventoController {
     private EventoRepository eventoRepository;
     private CadastroUsuarioService cadastroUsuarioService;
     private ParticipanteService participanteService;
+    private ParticipanteRepository participanteRepository;
 
-    public EventoController(EventoRepository eventoRepository, EventoService eventoService, CadastroUsuarioService cadastroUsuarioService, ParticipanteService participanteService) {
+    public EventoController(EventoRepository eventoRepository, EventoService eventoService, CadastroUsuarioService cadastroUsuarioService, ParticipanteService participanteService, ParticipanteRepository participanteRepository) {
         this.eventoRepository = eventoRepository;
         this.eventoService = eventoService;
         this.cadastroUsuarioService = cadastroUsuarioService;
         this.participanteService = participanteService;
+        this.participanteRepository = participanteRepository;
     }
 
     @GetMapping("/buscar")
@@ -220,6 +223,15 @@ public class EventoController {
 
         if (existeParticipante != null) {
             model.addAttribute("notificacao", new NotificacaoSweetAlert2("Você já está participando do evento!",
+                    TipoNotificaoSweetAlert2.WARNING, 4000));
+            return "evento/pesquisar :: formulario";
+        }
+
+        // Verificar se o evento ainda tem capacidade disponível
+        Long participantesAtuais = participanteRepository.countByEvento(evento);
+        
+        if (participantesAtuais >= evento.getCapacidade()) {
+            model.addAttribute("notificacao", new NotificacaoSweetAlert2("Este evento já atingiu sua capacidade máxima!",
                     TipoNotificaoSweetAlert2.WARNING, 4000));
             return "evento/pesquisar :: formulario";
         }
